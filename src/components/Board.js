@@ -80,9 +80,9 @@ export default class Board extends Component {
          */
         const RedStrokeBar = new Path({
             points: Rect(30, 80, width - 60, 30),
-            strokeColor: Gradient({ 
-                ctx, 
-                endPosition: { x: 170 }, 
+            strokeColor: Gradient({
+                ctx,
+                endPosition: { x: 170 },
                 colorStops: [
                     { offset: 0, color: "magenta" },
                     { offset: 0.5, color: "blue" },
@@ -162,23 +162,55 @@ export default class Board extends Component {
 
         updateElements();
 
-        canvas.onmousemove = (ev) => {
+        this.eventHandling(canvas, Elements, updateElements);
+    }
+
+    /**
+     * 
+     * @param {HTMLCanvasElement} canvas 
+     * @param {[]} Elements 
+     * @param {Function} updateElements 
+     */
+    eventHandling(canvas, Elements, updateElements) {
+        let isClicking = false;
+        let selectedElement;
+
+        canvas.onmouseup = () => isClicking = false;
+
+        canvas.onmousedown = (ev) => {
+            isClicking = true;
+            selectedElement = undefined;
             const mousePosition = getMousePosition(ev);
 
-            Elements.forEach(element => {
-                /*
-                 * TODO: Implementar métodos isOn e renderTransformBox
-                 * nas classes Path e Text (foram implementados apenas
-                 * na classe Circle)  
-                 */
-
-                if (typeof element.isOn === 'function') {
-                    element.showTransformBox = element.isOn(mousePosition);
-
-                    updateElements();
+            Elements.reverse().forEach(element => {
+                if (
+                    element.isOn !== undefined && element.isOn(mousePosition)
+                    && selectedElement === undefined
+                ) {
+                    selectedElement = element;
                 }
+                
+                element.showTransformBox = (element === selectedElement);
             });
-        };
+
+            Elements.reverse();
+
+            updateElements();
+        }
+
+        canvas.onmousemove = (ev) => {
+            const mouseMovement = { x: ev.movementX, y: ev.movementY };
+
+            if (isClicking && selectedElement !== undefined) { // Um elemento está sendo arrastado
+                selectedElement.moveTo(mouseMovement);
+                updateElements();
+            }
+        }
+
+        canvas.oncontextmenu = (ev) => {
+            ev.preventDefault();
+            console.log('Menuzinho do Jorjão');
+        }
     }
 }
 

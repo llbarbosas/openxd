@@ -44,6 +44,26 @@ export default class Path {
         return isOn;
     }
 
+    moveTo({x, y}){
+        let { points } = this.style;
+        
+        this.style.points = points.map(
+            point => {
+                const controlPoint = (point.controlPoint !== undefined) ?
+                    {
+                        x: point.controlPoint.x + x,
+                        y: point.controlPoint.y + y
+                    } : undefined;
+
+                return {
+                    x: point.x + x,
+                    y: point.y + y,
+                    controlPoint
+                }
+            }
+        );
+    }
+
     /**
      * @param {CanvasRenderingContext2D} ctx 
      */

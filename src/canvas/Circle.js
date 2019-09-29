@@ -37,6 +37,15 @@ export default class Circle {
         return isOn;
     }
 
+    moveTo({x, y}){
+        const { x: oldX, y: oldY } = this.style.position;
+
+        this.style.position = {
+            x: oldX + x,
+            y: oldY + y
+        };
+    }
+
     /**
      * @param {CanvasRenderingContext2D} ctx 
      */
@@ -68,7 +77,7 @@ export default class Circle {
      * @param {CanvasRenderingContext2D} ctx 
      */
     renderTransformBox = (ctx) => renderTransformBox(ctx, this.getPointEnds());
-    
+
     getPointEnds(){
         const { position, radius } = this.style;
         const max = { x: position.x+radius, y: position.y+radius };
