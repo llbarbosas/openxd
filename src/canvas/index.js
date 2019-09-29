@@ -59,3 +59,32 @@ export function getMousePosition(mouseEvent) {
 
     return mousePosition;
 }
+
+/**
+ * https://www.w3schools.com/tags/canvas_strokestyle.asp
+ * 
+ * @param {{
+ *      ctx: CanvasRenderingContext2D, initialPosition: Position,
+ *      endPosition: Position, colorStops: { offset: number, color: string }[]
+ * }} 
+ */
+export function Gradient({
+    ctx, initialPosition={x: 0, y: 0, r: undefined},
+    endPosition={x: 0, y: 0, r: undefined},
+    colorStops=[]
+}){
+    const { x: x1, y: y1, r: r1 } = initialPosition;
+    const { x: x2=x1, y: y2=y1, r: r2 } = endPosition;
+    let gradient;
+
+    if(r1 !== undefined && r2 !== undefined)
+        gradient = ctx.createRadialGradient(x1, y1, r1, x2, y2, r2);
+    else
+        gradient = ctx.createLinearGradient(x1, y1, x2, y2);
+
+    colorStops.forEach(
+        colorStop => gradient.addColorStop(colorStop.offset, colorStop.color)
+    ); 
+    
+    return gradient;
+}

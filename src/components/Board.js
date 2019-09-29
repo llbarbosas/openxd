@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {
     Path, Circle, Text,
     PathGroup, Rect, RenderAll,
-    getMousePosition
+    getMousePosition, Gradient
 } from './../canvas';
 
 export default class Board extends Component {
@@ -80,7 +80,16 @@ export default class Board extends Component {
          */
         const RedStrokeBar = new Path({
             points: Rect(30, 80, width - 60, 30),
-            strokeColor: "red", strokeWidth: 3
+            strokeColor: Gradient({ 
+                ctx, 
+                endPosition: { x: 170 }, 
+                colorStops: [
+                    { offset: 0, color: "magenta" },
+                    { offset: 0.5, color: "blue" },
+                    { offset: 1, color: "red" }
+                ]
+            }),
+            strokeWidth: 3
         });
 
         /*
