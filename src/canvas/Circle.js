@@ -1,6 +1,6 @@
-import Path from './Path';
-import { Rect } from './';
 import './typedef';
+
+import { renderTransformBox } from './'; 
 
 /**
  * Classe responsável pela criação de circulos (é impossível
@@ -67,17 +67,14 @@ export default class Circle {
     /**
      * @param {CanvasRenderingContext2D} ctx 
      */
-    renderTransformBox(ctx){
-        const { radius, position } = this.style;
+    renderTransformBox = (ctx) => renderTransformBox(ctx, this.getPointEnds());
+    
+    getPointEnds(){
+        const { position, radius } = this.style;
+        const max = { x: position.x+radius, y: position.y+radius };
+        const min = { x: position.x-radius, y: position.y-radius };
 
-        const transformBox = new Path({ 
-            points: Rect(position.x-radius, position.y-radius, 2*radius), 
-            strokeWidth: 1,
-            strokeColor: 'cyan',
-            dashedStroke: true
-        });
-
-        transformBox.render(ctx);
+        return { max, min };
     }
 
     /**

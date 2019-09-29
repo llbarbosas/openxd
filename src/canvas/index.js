@@ -88,3 +88,28 @@ export function Gradient({
     
     return gradient;
 }
+
+export function renderTransformBox(ctx, { max, min }){
+    const sideSize = 6;
+    const transformBox = new Path({ 
+        points: Rect(min.x, min.y, max.x-min.x, max.y-min.y), 
+        strokeWidth: 1,
+        strokeColor: 'cyan',
+        // dashedStroke: true
+    });
+    const transformPoints = PathGroup(
+        { fillColor: 'white', strokeWidth: 0.8, strokeColor: 'cyan' },
+        [
+            { points: Rect(min.x-sideSize/2, min.y-sideSize/2, sideSize) },
+            { points: Rect((max.x+min.x-sideSize/2)/2, min.y-sideSize/2, sideSize) },
+            { points: Rect(max.x-sideSize/2, min.y-sideSize/2, sideSize) },
+            { points: Rect(max.x-sideSize/2, (max.y+min.y-sideSize/2)/2, sideSize) },
+            { points: Rect(max.x-sideSize/2, max.y-sideSize/2, sideSize) },
+            { points: Rect((max.x+min.x-sideSize/2)/2, max.y-sideSize/2, sideSize) },
+            { points: Rect(min.x-sideSize/2, max.y-sideSize/2, sideSize) },
+            { points: Rect(min.x-sideSize/2, (max.y+min.y-sideSize/2)/2, sideSize) },
+        ]
+    );
+
+    RenderAll(ctx, [transformBox, ...transformPoints]);
+}

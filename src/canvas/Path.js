@@ -1,5 +1,7 @@
 import './typedef';
 
+import { renderTransformBox } from './'; 
+
 export default class Path {
     /**
      * @param {PathStyle} style 
@@ -24,6 +26,22 @@ export default class Path {
             points, fillColor, strokeColor, strokeWidth,
             opacity, shadow, dashedStroke
         };
+    }
+
+    /**
+     * @param {Position} elementPosition 
+     */
+    isOn(elementPosition){
+        const { max, min } = this.getPointEnds();
+
+        const isOn = (
+            elementPosition.x <= max.x
+            && elementPosition.x >= min.x
+            && elementPosition.y <= max.y
+            && elementPosition.y >= min.y
+        );
+
+        return isOn;
     }
 
     /**
@@ -69,7 +87,26 @@ export default class Path {
             .drawPoints(ctx)
             .paint(ctx);
 
+        if(this.showTransformBox)
+            this.renderTransformBox(ctx);
+
         ctx.restore();
+    }
+
+    /**
+     * @param {CanvasRenderingContext2D} ctx 
+     */
+    renderTransformBox = (ctx) => renderTransformBox(ctx, this.getPointEnds());
+
+    getPointEnds(){
+        const { points } = this.style;
+
+        const xValues = points.map(point => point.x);
+        const yValues = points.map(point => point.y);
+        const max = { x: Math.max(...xValues), y: Math.max(...yValues) };
+        const min = { x: Math.min(...xValues), y: Math.min(...yValues) };
+
+        return { max, min };
     }
 
     /**
@@ -150,11 +187,8 @@ export default class Path {
 
         if (fillColor !== '')
             ctx.fill();
-        if (strokeColor !== ''){
+        if (strokeColor !== '')
             ctx.stroke();
-            console.log("Stroking", strokeColor);
-        }
-            
 
         return this;
     }
