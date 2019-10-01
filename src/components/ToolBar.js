@@ -5,9 +5,9 @@ import { IoMdNavigate, IoMdRadioButtonOff, IoMdSquareOutline } from 'react-icons
 import { FaPenNib } from 'react-icons/fa';
 import { MdTitle , MdNote } from 'react-icons/md';
 
-export default function Toolbar(){
+export default function Toolbar({ showMenu }) {
     return (
-        <Nav>
+        <Nav showMenu={showMenu}>
             <ul>
                 <Li active><IoMdNavigate className="io-navigate"/></Li>
                 <Li><IoMdSquareOutline/></Li>
@@ -29,6 +29,9 @@ const Nav = styled.nav`
     
     padding: 15px;
     height: 100%;
+
+    transition: all .2s;
+    margin-left: ${ ({ showMenu }) => showMenu ? "150px" : "0px"};
 `;
 
 const Li = styled.li`

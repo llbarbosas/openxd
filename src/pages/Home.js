@@ -8,22 +8,38 @@ import ToolBar from '../components/ToolBar';
 import OptionsPanel from '../components/OptionsPanel';
 import Board from '../components/Board';
 
-export default function Home() {
-    return (
-        <>
-            <Container>
-                <TopBar />
-                <ToolBar />
-                <OptionsPanel />
+export default class Home extends React.Component {
+    constructor(props) {
+        super(props);
 
-                <Boards>
-                    <Board />
-                </Boards>
-            </Container>
-            
-            <GlobalStyle />
-        </>
-    );
+        this.state = {
+            showMenu: false
+        };
+
+        this.openSideMenu = this.openSideMenu.bind(this)
+    }
+
+    openSideMenu() {
+        this.setState({showMenu: !this.state.showMenu});
+    }
+
+    render() {
+        return (
+            <>
+                <Container>
+                    <TopBar openSideMenu={this.openSideMenu} />
+                    <ToolBar  showMenu={this.state.showMenu} />
+                    <OptionsPanel />
+    
+                    <Boards>
+                        <Board />
+                    </Boards>
+                </Container>
+                
+                <GlobalStyle />
+            </>
+        );
+    }
 }
 
 const Container = styled.div`

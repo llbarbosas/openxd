@@ -3,12 +3,12 @@ import styled from 'styled-components';
 
 import { FiSearch, FiShare, FiPlay, FiMenu } from 'react-icons/fi';
 
-export default function TopBar() {
+export default function TopBar({ openSideMenu }) {
     return (
         <Header>
             <nav>
                 <PagesUl>
-                    <Li><FiMenu size="20" className="fi-menu"/></Li>
+                    <Li onClick={openSideMenu}><FiMenu size="20" className="fi-menu"/></Li>
                     <Li active>Design</Li>
                     <Li>Prototype</Li>
                 </PagesUl>
@@ -50,6 +50,12 @@ const Li = styled.li`
 
     .fi-menu {
         margin-right: 20px;
+        cursor: pointer;
+        transition: all .2s;
+    }
+
+    .fi-menu:hover {
+        color: black;
     }
 `;
 
